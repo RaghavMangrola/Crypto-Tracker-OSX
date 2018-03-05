@@ -12,14 +12,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
 
+    var priceTimer: Timer!
 
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
-
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-
-        print("Did Launch")
 
         if let button = statusItem.button {
             button.title = "..."
@@ -27,10 +24,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         createMenu()
 
-        let timer = Timer(timeInterval: 10, repeats: true) { (_) in
+        priceTimer = Timer(timeInterval: 10, repeats: true) { (_) in
             self.sendRequest()
         }
-        timer.fire()
+        priceTimer.fire()
+
+        RunLoop.main.add(priceTimer, forMode: .commonModes)
     }
 
     func sendRequest() {
